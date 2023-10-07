@@ -7,11 +7,13 @@ import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { ElementRef, FormEvent, useRef, useState } from 'react';
 import Link from 'next/link';
+import { renderIf } from '@/utils/rendering';
 
 export default function LoginPage() {
   const searchParams = useSearchParams();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>();
+  const [loading, setIsLoading] = useState(false);
   const username = useRef<ElementRef<'input'>>(null);
   const password = useRef<ElementRef<'input'>>(null);
 
@@ -26,13 +28,22 @@ export default function LoginPage() {
       redirect: false,
     });
 
-    if (res?.error) {
-      setIsLoading(false);
+    setIsLoading(false);
+
+    if (res?.ok) {
+      const redirectTo = searchParams.get('redirect-to') ?? '/';
+      window.location.href = window.location.origin + redirectTo;
       return;
     }
 
-    const redirectTo = searchParams.get('redirect-to') ?? '/';
-    window.location.href = window.location.origin + redirectTo;
+    if (res?.status === 401) {
+      setError(
+        'Login failed, make sure your username and password are correct'
+      );
+      return;
+    }
+
+    setError('Something went wrong, please try again');
   }
 
   return (
@@ -41,6 +52,7 @@ export default function LoginPage() {
         <Heading order={4} className='text-center'>
           Login to Back Office
         </Heading>
+
         <Input
           className='text-black'
           ref={username}
@@ -49,6 +61,7 @@ export default function LoginPage() {
           required
           autoFocus
         />
+
         <Input
           ref={password}
           type='password'
@@ -56,9 +69,18 @@ export default function LoginPage() {
           required
           className='text-black'
         />
+        <Button loading={loading}>Login</Button>
 
-        <Button>{isLoading ? 'Loading...' : 'Login'}</Button>
-        <div className='text-center'>
+        {renderIf(
+          <div className='text-red-600 text-center text-balance px-4'>
+            <div className='mb-2'>{error}</div>
+            <hr />
+          </div>,
+          error,
+          loading === false
+        )}
+
+        <div className='text-center text-sm'>
           {"Don't have an account?"}{' '}
           <Link className='underline' href={'/signup'}>
             Create
