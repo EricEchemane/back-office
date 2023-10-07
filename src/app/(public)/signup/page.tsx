@@ -39,6 +39,11 @@ export default function SignupPage() {
       toast({
         title: 'Account created successfully',
         description: 'You can now log in to your account',
+        action: (
+          <Link href={'/login'}>
+            <Button size={'sm'}> Login </Button>
+          </Link>
+        ),
       });
     }
   };
