@@ -7,12 +7,12 @@ import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { ElementRef, FormEvent, useRef, useState } from 'react';
 import Link from 'next/link';
-import { renderIf } from '@/utils/rendering';
+import { useToast } from '@/components/ui/use-toast';
 
 export default function LoginPage() {
   const searchParams = useSearchParams();
+  const { toast } = useToast();
 
-  const [error, setError] = useState<string | undefined>();
   const [loading, setIsLoading] = useState(false);
   const username = useRef<ElementRef<'input'>>(null);
   const password = useRef<ElementRef<'input'>>(null);
@@ -37,13 +37,18 @@ export default function LoginPage() {
     }
 
     if (res?.status === 401) {
-      setError(
-        'Login failed, make sure your username and password are correct'
-      );
+      toast({
+        description:
+          'Login failed, make sure your username and password are correct',
+        variant: 'destructive',
+      });
       return;
     }
 
-    setError('Something went wrong, please try again');
+    toast({
+      description: res?.error ?? 'Something went wrong, please try again later',
+      variant: 'destructive',
+    });
   }
 
   return (
@@ -70,15 +75,6 @@ export default function LoginPage() {
           className='text-black'
         />
         <Button loading={loading}>Login</Button>
-
-        {renderIf(
-          <div className='text-red-600 text-center text-balance px-4'>
-            <div className='mb-2'>{error}</div>
-            <hr />
-          </div>,
-          error,
-          loading === false
-        )}
 
         <div className='text-center text-sm'>
           {"Don't have an account?"}{' '}

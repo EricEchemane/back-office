@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma';
 import { AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import hasher from 'bcryptjs';
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -20,12 +21,17 @@ export const authOptions: AuthOptions = {
           },
         });
 
-        if (!user || credentials?.password !== user.password) return null;
+        if (
+          !user ||
+          !credentials ||
+          !hasher.compareSync(credentials.password, user.password)
+        )
+          return null;
 
         return {
           id: user.id.toString(),
           name: user.username,
-          permissions: user?.role.permissions.map(
+          permissions: user?.role?.permissions.map(
             (permission) => permission.name
           ),
         };

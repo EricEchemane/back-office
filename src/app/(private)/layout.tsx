@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Sidebar from './Sidebar';
 import { getServerSession } from 'next-auth';
+import { Toaster } from '@/components/ui/toaster';
 
 export const runtime = 'nodejs';
 
@@ -28,7 +29,7 @@ async function getPermissions(): Promise<string[]> {
       },
     },
   });
-  if (!user) return [];
+  if (!user?.role) return [];
   return user.role.permissions.map((permission) => permission.name);
 }
 
@@ -44,7 +45,9 @@ export default async function RootLayout({
       <body className={inter.className}>
         <div className='flex'>
           <Sidebar permissions={permissions} />
-          <main className='p-4 h-screen'>{children}</main>
+          <main className='p-4 h-screen'>
+            {children} <Toaster />
+          </main>
         </div>
       </body>
     </html>

@@ -20,8 +20,8 @@ model User {
   password String
   status   UserStatus @default(PendingRole)
 
-  role   Role @relation(fields: [roleId], references: [id])
-  roleId Int
+  role   Role? @relation(fields: [roleId], references: [id])
+  roleId Int?
 }
 
 enum UserStatus {
