@@ -1,4 +1,4 @@
-import './globals.css';
+import '../globals.css';
 import { prisma } from '@/prisma';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
