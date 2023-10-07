@@ -9,6 +9,7 @@ This repo _WILL_ showcase a fully-featured back-office application. The features
 - UI components using `shadcn ui` and `tailwind css`
 - Searching audit using `elastic-search`
 - CI/CD using `vercel preview deployments` and `github actions`
+- File upload with `cloudinary`
 
 ...and more to come.
 

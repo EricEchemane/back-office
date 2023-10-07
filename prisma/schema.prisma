@@ -12,12 +12,24 @@ datasource db {
 
 model User {
   id        Int      @id @default(autoincrement())
-  username  String   @unique
-  password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  role      Role     @relation(fields: [roleId], references: [id])
-  roleId    Int
+
+  username String     @unique
+  email    String     @unique
+  password String
+  status   UserStatus @default(PendingRole)
+
+  role   Role @relation(fields: [roleId], references: [id])
+  roleId Int
+}
+
+enum UserStatus {
+  PendingRole
+  Active
+  Inactive
+  Suspended
+  Deleted
 }
 
 model Permission {
