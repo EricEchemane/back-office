@@ -74,9 +74,20 @@ export default function LoginPage() {
           required
           className='text-black'
         />
-        <Button loading={loading}>Login</Button>
 
-        <div className='text-center text-sm'>
+        <div className='grid gap-2'>
+          <Button loading={loading}>Login</Button>
+          <div className='text-center text-sm'>or</div>
+          <Button
+            type='button'
+            variant={'outline'}
+            onClick={() => signIn('google')}
+          >
+            Continue with Google
+          </Button>
+        </div>
+
+        <div className='text-center text-xs'>
           {"Don't have an account?"}{' '}
           <Link className='underline' href={'/signup'}>
             Create
