@@ -83,8 +83,16 @@ export const authOptions: AuthOptions = {
             username: profile.name,
             image: profile.picture,
           },
+          include: {
+            role: {
+              include: { permissions: true },
+            },
+          },
         });
         user.id = u.id;
+        user.permissions = u.role?.permissions.map(
+          (permission) => permission.name
+        );
         return true;
       }
 
