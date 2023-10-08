@@ -5,7 +5,6 @@ export function handleErrorMessage(error: unknown) {
     return { error: getErrorMessage(error.message) };
   }
 
-  // eslint-disable-next-line no-console
   console.error(error); // TODO: make a logger
   return { error: 'Something went wrong, please try again' };
 }
