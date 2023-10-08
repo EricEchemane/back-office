@@ -1,3 +1,3 @@
-export function renderIf(node: React.ReactNode, ...conditions: any[]) {
+export function renderIf(node: React.ReactNode, ...conditions: boolean[]) {
   return conditions.every(Boolean) ? node : null;
 }

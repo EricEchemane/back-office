@@ -1,11 +1,11 @@
 import { EPermissions } from '@/constants/permissions';
 
-interface RoutePermission {
+interface RouteWithPermission {
   path: string;
   permission: EPermissions;
 }
 
-export const routePermissions: RoutePermission[] = [
+export const restrictedRoutes: RouteWithPermission[] = [
   {
     path: '/read',
     permission: EPermissions.BankRead,

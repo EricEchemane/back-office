@@ -5,7 +5,7 @@ export const newUserSchema = z
     username: z.string().trim().min(4, {
       message: 'Please provide a username with 4 characters or more',
     }),
-    email: z.string().email(),
+    email: z.string().email('Please provide a valid email address'),
     password: z
       .string()
       .min(6, { message: 'Password must be at least 6 characters long' }),

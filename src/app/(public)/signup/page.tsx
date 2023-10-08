@@ -29,23 +29,24 @@ export default function SignupPage() {
     const res = await createUser(data);
     setLoading(false);
 
-    if (res.error) {
+    if (res?.error) {
       toast({
         description: res.error,
         variant: 'destructive',
       });
-    } else {
-      reset();
-      toast({
-        title: 'Account created successfully',
-        description: 'You can now log in to your account',
-        action: (
-          <Link href={'/login'}>
-            <Button size={'sm'}> Login </Button>
-          </Link>
-        ),
-      });
+      return;
     }
+
+    reset();
+    toast({
+      title: 'Account created successfully',
+      description: 'You can now log in to your account',
+      action: (
+        <Link href={'/login'}>
+          <Button size={'sm'}> Login </Button>
+        </Link>
+      ),
+    });
   };
 
   return (

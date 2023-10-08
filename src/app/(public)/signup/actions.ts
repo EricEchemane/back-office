@@ -1,31 +1,30 @@
 'use server';
 
 import { prisma } from '@/prisma';
-import { NewUser } from './zod';
+import { NewUser, newUserSchema } from './zod';
 import hasher from 'bcryptjs';
+import { flattenErrors } from '@/utils/zod';
+import { handleErrorMessage } from '@/utils/error_handling';
 
-const ErrUsernameUniqueConstraint =
-  'Unique constraint failed on the fields: (`username`)';
-const ErrEmailUniqueConstraint =
-  'Unique constraint failed on the fields: (`email`)';
-
-export async function createUser({ confirmPassword, ...data }: NewUser) {
+export async function createUser(payload: NewUser) {
   try {
-    const salt = await hasher.genSalt(10);
-    const hashedPassword = await hasher.hash(data.password, salt);
-    data.password = hashedPassword;
-    const newUser = await prisma.user.create({ data });
-    return { ok: true, userId: newUser.id };
-  } catch (error: any) {
-    if (error?.message?.includes(ErrUsernameUniqueConstraint)) {
-      return { ok: false, error: 'Username is already taken' };
-    }
-    if (error?.message?.includes(ErrEmailUniqueConstraint)) {
-      return { ok: false, error: 'Email is already taken' };
+    const validation = newUserSchema.safeParse(payload);
+    if (!validation.success) {
+      return {
+        error: flattenErrors(validation.error).at(0),
+      };
     }
 
-    // eslint-disable-next-line no-console
-    console.error(error); // TODO: make a logger
-    return { ok: false, error: 'Something went wrong, please try again' };
+    const { email, username, password } = payload;
+    const salt = await hasher.genSalt(10);
+    await prisma.user.create({
+      data: {
+        email,
+        username,
+        password: await hasher.hash(password, salt),
+      },
+    });
+  } catch (error) {
+    return handleErrorMessage(error);
   }
 }

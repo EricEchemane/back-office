@@ -17,7 +17,8 @@ model User {
 
   username String     @unique
   email    String     @unique
-  password String
+  image    String?
+  password String?
   status   UserStatus @default(PendingRole)
 
   role   Role? @relation(fields: [roleId], references: [id])

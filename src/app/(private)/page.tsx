@@ -1,10 +1,15 @@
-import { Button } from '@/components/ui/button';
+import { authOptions } from '@/config/auth';
+import { getServerSession } from 'next-auth';
 
-export default function HomePage() {
+export default async function HomePage() {
+  const session = await getServerSession(authOptions);
+
   return (
     <div>
       <h1>HomePage</h1>
-      <Button>Logih</Button>
+      <pre>
+        <code>{JSON.stringify(session, null, 2)}</code>
+      </pre>
     </div>
   );
 }
