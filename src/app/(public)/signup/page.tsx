@@ -29,7 +29,7 @@ export default function SignupPage() {
     const res = await createUser(data);
     setLoading(false);
 
-    if (res.error) {
+    if (res?.error) {
       toast({
         description: res.error,
         variant: 'destructive',

@@ -14,18 +14,17 @@ export async function createUser({ confirmPassword, ...data }: NewUser) {
     const salt = await hasher.genSalt(10);
     const hashedPassword = await hasher.hash(data.password, salt);
     data.password = hashedPassword;
-    const newUser = await prisma.user.create({ data });
-    return { ok: true, userId: newUser.id };
+    await prisma.user.create({ data });
   } catch (error: any) {
     if (error?.message?.includes(ErrUsernameUniqueConstraint)) {
-      return { ok: false, error: 'Username is already taken' };
+      return { error: 'Username is already taken' };
     }
     if (error?.message?.includes(ErrEmailUniqueConstraint)) {
-      return { ok: false, error: 'Email is already taken' };
+      return { error: 'Email is already taken' };
     }
 
     // eslint-disable-next-line no-console
     console.error(error); // TODO: make a logger
-    return { ok: false, error: 'Something went wrong, please try again' };
+    return { error: 'Something went wrong, please try again' };
   }
 }
