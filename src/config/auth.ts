@@ -31,6 +31,7 @@ export const authOptions: AuthOptions = {
         return {
           id: user.id.toString(),
           name: user.username,
+          email: user.email,
           permissions: user?.role?.permissions.map(
             (permission) => permission.name
           ),
@@ -44,8 +45,19 @@ export const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async jwt({ token, user }) {
-      token.permissions = user?.permissions;
+      if (user) {
+        token.permissions = user.permissions;
+        token.email = user.email;
+        token.name = user.name;
+      }
       return token;
+    },
+    async session({ session, token }) {
+      if (token) {
+        session.user.permissions = token.permissions;
+        session.user.id = +token.sub!;
+      }
+      return session;
     },
   },
 };
