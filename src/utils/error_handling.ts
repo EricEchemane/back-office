@@ -1,11 +1,14 @@
+import { Logger } from '@/config/logger';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 export function handleErrorMessage(error: unknown) {
   if (error instanceof PrismaClientKnownRequestError) {
-    return { error: getErrorMessage(error.message) };
+    const errMessage = getErrorMessage(error.message);
+    Logger.raw({ error: errMessage }, 'error');
+    return { error: errMessage };
   }
 
-  console.error(error); // TODO: make a logger
+  Logger.raw(error as object, 'unexpected_error');
   return { error: 'Something went wrong, please try again' };
 }
 

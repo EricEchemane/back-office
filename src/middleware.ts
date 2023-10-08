@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import { restrictedRoutes } from './config/restricted_routes';
+import { Logger } from './config/logger';
+import { ELogMessage } from './constants/log_message';
 
 export async function middleware(request: NextRequest) {
   const { pathname: currentPath, searchParams } = request.nextUrl;
@@ -23,21 +25,26 @@ export async function middleware(request: NextRequest) {
   }
 
   // when user is logged in, restrict access to login and signup pages
-  if (accessibleToPublic.includes(currentPath)) {
-    return indexRedirect(request);
-  }
+  if (accessibleToPublic.includes(currentPath)) return indexRedirect(request);
 
   const restrictedRoute = restrictedRoutes.find(
     (restricted) => restricted.path === currentPath
   );
   // do nothing if not restricted
-  if (!restrictedRoute) return NextResponse.next();
+  if (!restrictedRoute) {
+    Logger.info(request, ELogMessage.UserAccessedUnRestrictedRoute);
+    return NextResponse.next();
+  }
 
   const userPermissions = new Set(token.permissions);
   const isPermitted = userPermissions.has(restrictedRoute.permission);
-  if (!isPermitted) return indexRedirect(request);
+  if (!isPermitted) {
+    Logger.warn(request, ELogMessage.UserTryAccessWithoutPermission);
+    return indexRedirect(request);
+  }
 
   // everything is fine, let the user through
+  Logger.info(request);
   return NextResponse.next();
 }
 
