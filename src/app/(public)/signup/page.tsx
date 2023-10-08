@@ -34,18 +34,19 @@ export default function SignupPage() {
         description: res.error,
         variant: 'destructive',
       });
-    } else {
-      reset();
-      toast({
-        title: 'Account created successfully',
-        description: 'You can now log in to your account',
-        action: (
-          <Link href={'/login'}>
-            <Button size={'sm'}> Login </Button>
-          </Link>
-        ),
-      });
+      return;
     }
+
+    reset();
+    toast({
+      title: 'Account created successfully',
+      description: 'You can now log in to your account',
+      action: (
+        <Link href={'/login'}>
+          <Button size={'sm'}> Login </Button>
+        </Link>
+      ),
+    });
   };
 
   return (
