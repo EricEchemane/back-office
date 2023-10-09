@@ -5,6 +5,8 @@ import { getServerSession } from 'next-auth';
 import { Toaster } from '@/components/ui/toaster';
 import { authOptions } from '@/config/auth';
 import Sidebar from './_sidebar';
+import Topbar from './Topbar';
+import { redirect } from 'next/navigation';
 
 export const runtime = 'nodejs';
 
@@ -22,17 +24,21 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession(authOptions);
-  const permissions = session?.user.permissions ?? [];
+  if (!session?.user) redirect('/login');
+
+  const permissions = session.user.permissions ?? [];
 
   return (
     <html lang='en'>
       <body className={inter.className}>
         <div className='flex'>
           <Sidebar permissions={permissions} />
-          <main className='p-4 h-screen'>
-            {children} <Toaster />
+          <main className='p-3 h-screen'>
+            <Topbar session={session} />
+            {children}
           </main>
         </div>
+        <Toaster />
       </body>
     </html>
   );

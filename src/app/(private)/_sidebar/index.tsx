@@ -10,7 +10,7 @@ export default function Sidebar(props: { permissions: string[] }) {
   const [selected, setSelected] = useState<string | undefined>();
 
   return (
-    <aside className='border-r h-screen flex flex-col min-w-[200px] p-3'>
+    <nav className='border-r h-screen flex flex-col min-w-[200px] p-3'>
       {Routes.map((route) => {
         const permitted = userPermissions.has(route.permission);
         if (!permitted) return null;
@@ -27,6 +27,6 @@ export default function Sidebar(props: { permissions: string[] }) {
       })}
 
       <LogoutButton />
-    </aside>
+    </nav>
   );
 }
