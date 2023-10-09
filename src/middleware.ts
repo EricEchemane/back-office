@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import { restrictedRoutes } from './config/restricted_routes';
 import { Logger } from './config/logger';
 import { ELogMessage } from './constants/log_message';
+import { Routes } from './app/(private)/_sidebar/routes';
 
 export async function middleware(request: NextRequest) {
   const { pathname: currentPath, searchParams } = request.nextUrl;
@@ -27,17 +27,23 @@ export async function middleware(request: NextRequest) {
   // when user is logged in, restrict access to login and signup pages
   if (accessibleToPublic.includes(currentPath)) return indexRedirect(request);
 
-  const restrictedRoute = restrictedRoutes.find(
-    (restricted) => restricted.path === currentPath
+  const routes = Routes.flat(1);
+  const restrictedRoute = routes.find(
+    (restricted) => restricted.pathname === currentPath
   );
   // do nothing if not restricted
-  if (!restrictedRoute) {
-    Logger.info(request, ELogMessage.UserAccessedUnRestrictedRoute);
-    return NextResponse.next();
-  }
+  if (!restrictedRoute) return NextResponse.next();
 
   const userPermissions = new Set(token.permissions);
-  const isPermitted = userPermissions.has(restrictedRoute.permission);
+  let isPermitted = false;
+  if (Array.isArray(restrictedRoute.permission)) {
+    isPermitted = restrictedRoute.permission.every((permission) =>
+      userPermissions.has(permission)
+    );
+  } else if (typeof restrictedRoute.permission === 'string') {
+    isPermitted = userPermissions.has(restrictedRoute.permission);
+  }
+  // const isPermitted = userPermissions.has(restrictedRoute.permission);
   if (!isPermitted) {
     Logger.warn(request, ELogMessage.UserTryAccessWithoutPermission);
     return indexRedirect(request);

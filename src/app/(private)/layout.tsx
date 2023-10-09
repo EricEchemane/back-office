@@ -1,10 +1,10 @@
 import '../globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import Sidebar from './Sidebar';
 import { getServerSession } from 'next-auth';
 import { Toaster } from '@/components/ui/toaster';
 import { authOptions } from '@/config/auth';
+import Sidebar from './_sidebar';
 
 export const runtime = 'nodejs';
 

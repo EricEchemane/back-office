@@ -6,7 +6,9 @@ export default async function HomePage() {
 
   return (
     <div>
-      <h1>HomePage</h1>
+      <div>
+        <h1>HomePage</h1>
+      </div>
       <pre>
         <code>{JSON.stringify(session, null, 2)}</code>
       </pre>

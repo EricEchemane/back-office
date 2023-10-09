@@ -6,11 +6,13 @@
     "dev": "next dev",
     "build": "prisma migrate deploy && prisma generate && next build",
     "start": "next start",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "seed": "prisma db seed"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
     "@prisma/client": "5.3.1",
+    "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.5",
     "@upstash/redis": "^1.22.1",
@@ -44,6 +46,10 @@
     "postcss": "^8",
     "prisma": "^5.3.1",
     "tailwindcss": "^3",
+    "ts-node": "^10.9.1",
     "typescript": "^5"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"}  prisma/seed.ts"
   }
 }
