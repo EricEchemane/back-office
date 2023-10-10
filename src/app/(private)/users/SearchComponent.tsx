@@ -51,7 +51,7 @@ export default function SearchComponent() {
     <form
       onSubmit={search}
       onReset={reset}
-      className='p-2 flex gap-8 items-end'
+      className='p-2 flex gap-6 items-end'
     >
       <Input
         name='username'
@@ -73,7 +73,7 @@ export default function SearchComponent() {
         value={searchParams.get('status') ?? ''}
         onValueChange={(v) => handleSelectChange(v, 'status')}
       >
-        <SelectTrigger className='w-[180px]' label='Status'>
+        <SelectTrigger className='w-[240px]' label='Status' name='status'>
           <SelectValue placeholder='Select status' />
         </SelectTrigger>
         <SelectContent>

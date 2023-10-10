@@ -9,27 +9,35 @@ export async function getUsers(args: {
   email?: string;
   status?: number;
 }) {
-  await new Promise((resolve) => setTimeout(resolve, 5000));
   const { page, per_page, username, email, status } = args;
 
-  return prisma.user.findMany({
-    skip: page * per_page - per_page,
-    take: per_page,
-    select: {
-      id: true,
-      role: true,
-      email: true,
-      status: true,
-      username: true,
-      createdAt: true,
-      updatedAt: true,
-    },
-    where: {
-      email,
-      status,
-      username: {
-        contains: username,
+  const getUsersData = async () => {
+    return await prisma.user.findMany({
+      skip: page * per_page - per_page,
+      take: per_page,
+      select: {
+        id: true,
+        role: true,
+        email: true,
+        status: true,
+        username: true,
+        createdAt: true,
+        updatedAt: true,
       },
-    },
-  });
+      where: {
+        email,
+        status,
+        username: {
+          contains: username,
+        },
+      },
+    });
+  };
+
+  const [users, count] = await Promise.all([
+    getUsersData(),
+    await prisma.user.count(),
+  ]);
+
+  return { users, count };
 }

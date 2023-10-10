@@ -1,7 +1,9 @@
 import SearchComponent from './SearchComponent';
 import { Suspense } from 'react';
-import Table from './Table';
+import Table from './_table';
 import { Skeleton } from '@/components/ui/skeleton';
+
+export const dynamic = 'force-dynamic';
 
 export interface PageProps {
   searchParams: {
@@ -15,12 +17,12 @@ export interface PageProps {
 
 function Loading() {
   return (
-    <div className='p-2 space-y-4'>
-      <Skeleton className='h-[2rem] w-full' />
-      <Skeleton className='h-[2rem] w-full' />
-      <Skeleton className='h-[2rem] w-full' />
-      <Skeleton className='h-[2rem] w-full' />
-      <Skeleton className='h-[2rem] w-full' />
+    <div className='px-2 py-3 space-y-4'>
+      <Skeleton className='h-[2.5rem] w-full' />
+      <Skeleton className='h-[2.5rem] w-full' />
+      <Skeleton className='h-[2.5rem] w-full' />
+      <Skeleton className='h-[2.5rem] w-full' />
+      <Skeleton className='h-[2.5rem] w-full' />
     </div>
   );
 }
