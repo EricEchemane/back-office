@@ -15,22 +15,19 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  username String     @unique
-  email    String     @unique
+  username String  @unique
+  email    String  @unique
   image    String?
   password String?
-  status   UserStatus @default(PendingRole)
+
+  // 0: pending
+  // 1: active
+  // 2: inactive
+  // 3: blocked
+  status Int @default(0)
 
   role   Role? @relation(fields: [roleId], references: [id])
   roleId Int?
-}
-
-enum UserStatus {
-  PendingRole
-  Active
-  Inactive
-  Suspended
-  Deleted
 }
 
 model Permission {
