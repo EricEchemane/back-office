@@ -19,7 +19,13 @@ export default async function Table({ searchParams }: PageProps) {
 
   return (
     <div className='px-2'>
-      <DataTable columns={columns} data={data.users} count={data.count} />
+      <DataTable
+        columns={columns}
+        data={data.users}
+        count={data.count}
+        perPage={per_page}
+        currentPage={page}
+      />
     </div>
   );
 }

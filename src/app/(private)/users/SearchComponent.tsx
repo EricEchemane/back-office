@@ -2,8 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { createUrl } from '@/utils/strings';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 import {
   Select,
@@ -12,39 +11,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import useUrlSearch from '@/hooks/useUrlSearch';
 
 export default function SearchComponent() {
-  const router = useRouter();
   const searchParams = useSearchParams();
+  const {
+    reset,
+    registerParam,
+    handleSelectChange,
+    search: triggerSearch,
+  } = useUrlSearch('/users');
 
   function search(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
     const form = e.target as HTMLFormElement;
-    const newParams = new URLSearchParams(searchParams.toString());
-
-    const registerParam = (input: HTMLInputElement) => {
-      input.value
-        ? newParams.set(input.name, input.value)
-        : newParams.delete(input.name);
-    };
-
     registerParam(form.username);
     registerParam(form.email);
     registerParam(form.status);
-
-    router.push(createUrl('/users', newParams));
-  }
-
-  function reset() {
-    router.push('/users');
-  }
-
-  function handleSelectChange(value: string, name: string): void {
-    const newParams = new URLSearchParams(searchParams.toString());
-    if (value != '') newParams.set(name, value);
-    else newParams.delete(name);
-    router.push(createUrl('/users', newParams));
+    triggerSearch();
   }
 
   return (
