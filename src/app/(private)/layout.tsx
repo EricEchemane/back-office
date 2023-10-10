@@ -5,7 +5,7 @@ import { getServerSession } from 'next-auth';
 import { Toaster } from '@/components/ui/toaster';
 import { authOptions } from '@/config/auth';
 import Sidebar from './_sidebar';
-import Topbar from './Topbar';
+import Topbar from './_topbar';
 import { redirect } from 'next/navigation';
 
 export const runtime = 'nodejs';
@@ -33,7 +33,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <div className='flex'>
           <Sidebar permissions={permissions} />
-          <main className='p-3 h-screen'>
+          <main className='p-3 h-screen w-full'>
             <Topbar session={session} />
             {children}
           </main>

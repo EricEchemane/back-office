@@ -1,6 +1,5 @@
 'use client';
 
-import { strings } from '@/utils/strings';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -13,8 +12,6 @@ function constructSegments(pathName: string) {
 
   const segments = urlSegments.map((segment, index) => {
     const fullPath = urlSegments.slice(0, index + 1).join('/');
-
-    segment = strings.titleCase(segment);
 
     return {
       displayPath: fullPath === homePath ? 'Home' : segment,
@@ -35,7 +32,7 @@ export default function BreadCrumb() {
       {paths.map(({ fullPath, displayPath, isLast }) => {
         let DisplayPath = (
           <Link
-            className='hover:bg-neutral-100 py-1 px-2 rounded'
+            className='hover:bg-neutral-100 py-1 px-2 rounded capitalize'
             href={fullPath}
           >
             {displayPath}
@@ -43,7 +40,9 @@ export default function BreadCrumb() {
         );
 
         if (segmentsWithNoPage.includes(fullPath)) {
-          DisplayPath = <span className='py-1 px-2'>{displayPath}</span>;
+          DisplayPath = (
+            <span className='py-1 px-2 capitalize'>{displayPath}</span>
+          );
         }
 
         return (

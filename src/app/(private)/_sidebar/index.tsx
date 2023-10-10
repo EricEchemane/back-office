@@ -1,9 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import { Routes } from './routes';
 import ParentMenu from './ParentMenu';
-import { useState } from 'react';
-import LogoutButton from './Logout';
 
 export default function Sidebar(props: { permissions: string[] }) {
   const userPermissions = new Set(props.permissions);
@@ -25,8 +24,6 @@ export default function Sidebar(props: { permissions: string[] }) {
           />
         );
       })}
-
-      <LogoutButton />
     </nav>
   );
 }
