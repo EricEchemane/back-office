@@ -1,9 +1,9 @@
-import { pareseIntWithDefault } from '@/utils/numbers';
-import { getUsers } from './actions';
 import SearchComponent from './SearchComponent';
+import { Suspense } from 'react';
+import Table from './Table';
+import { Skeleton } from '@/components/ui/skeleton';
 
-export const dynamic = 'force-dynamic';
-interface PageProps {
+export interface PageProps {
   searchParams: {
     page?: string;
     per_page?: string;
@@ -13,22 +13,27 @@ interface PageProps {
   };
 }
 
-export default async function UsersPage({ searchParams }: PageProps) {
-  const page = pareseIntWithDefault(searchParams.page, 1)!;
-  const per_page = pareseIntWithDefault(searchParams.per_page, 10)!;
+function Loading() {
+  return (
+    <div className='p-2 space-y-4'>
+      <Skeleton className='h-[2rem] w-full' />
+      <Skeleton className='h-[2rem] w-full' />
+      <Skeleton className='h-[2rem] w-full' />
+      <Skeleton className='h-[2rem] w-full' />
+      <Skeleton className='h-[2rem] w-full' />
+    </div>
+  );
+}
 
-  const users = await getUsers({
-    page,
-    per_page,
-    email: searchParams.email,
-    username: searchParams.username,
-    status: pareseIntWithDefault(searchParams.status),
-  });
+export default async function UsersPage({ searchParams }: PageProps) {
+  const suspeseKey = new URLSearchParams(searchParams).toString();
 
   return (
     <div>
       <SearchComponent />
-      <pre>{JSON.stringify(users, null, 2)}</pre>
+      <Suspense fallback={<Loading />} key={suspeseKey}>
+        <Table searchParams={searchParams} />
+      </Suspense>
     </div>
   );
 }

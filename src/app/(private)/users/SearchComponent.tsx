@@ -23,15 +23,15 @@ export default function SearchComponent() {
     const form = e.target as HTMLFormElement;
     const newParams = new URLSearchParams(searchParams.toString());
 
-    const registerParams = (input: HTMLInputElement) => {
+    const registerParam = (input: HTMLInputElement) => {
       input.value
         ? newParams.set(input.name, input.value)
         : newParams.delete(input.name);
     };
 
-    registerParams(form.username);
-    registerParams(form.email);
-    registerParams(form.status);
+    registerParam(form.username);
+    registerParam(form.email);
+    registerParam(form.status);
 
     router.push(createUrl('/users', newParams));
   }
@@ -51,13 +51,13 @@ export default function SearchComponent() {
     <form
       onSubmit={search}
       onReset={reset}
-      className='p-2 flex gap-4 items-end'
+      className='p-2 flex gap-8 items-end'
     >
       <Input
         name='username'
         label='Username'
         placeholder='Enter username'
-        defaultValue={searchParams?.get('username') ?? undefined}
+        defaultValue={searchParams.get('username') ?? undefined}
       />
 
       <Input
@@ -65,12 +65,12 @@ export default function SearchComponent() {
         name='email'
         label='Email'
         placeholder='Enter email'
-        defaultValue={searchParams?.get('email') ?? undefined}
+        defaultValue={searchParams.get('email') ?? undefined}
       />
 
       <Select
         name='status'
-        value={searchParams?.get('status') ?? ''}
+        value={searchParams.get('status') ?? ''}
         onValueChange={(v) => handleSelectChange(v, 'status')}
       >
         <SelectTrigger className='w-[180px]' label='Status'>

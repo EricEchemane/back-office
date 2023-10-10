@@ -9,6 +9,7 @@ export async function getUsers(args: {
   email?: string;
   status?: number;
 }) {
+  await new Promise((resolve) => setTimeout(resolve, 5000));
   const { page, per_page, username, email, status } = args;
 
   return prisma.user.findMany({
