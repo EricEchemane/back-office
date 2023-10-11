@@ -33,6 +33,7 @@ interface DataTableProps<TData, TValue> {
   count: number;
   perPage: number;
   currentPage: number;
+  pathName: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -41,6 +42,7 @@ export function DataTable<TData, TValue>({
   count,
   perPage,
   currentPage,
+  pathName,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -49,7 +51,7 @@ export function DataTable<TData, TValue>({
   });
 
   const { search, addQuery, searchParams, handleSelectChange } =
-    useUrlSearch('/users');
+    useUrlSearch(pathName);
 
   function changePage(page: number) {
     addQuery('page', page.toString());

@@ -1,7 +1,7 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { getUsers } from '../actions';
+import { getUsers } from './actions';
 
 type User = Awaited<ReturnType<typeof getUsers>>['users'][number];
 

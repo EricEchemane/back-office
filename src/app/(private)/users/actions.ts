@@ -29,6 +29,7 @@ export async function getUsers(args: {
         status,
         username: {
           contains: username,
+          mode: 'insensitive',
         },
       },
     });

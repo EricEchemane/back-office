@@ -1,9 +1,9 @@
 import React from 'react';
-import { PageProps } from '../page';
+import { PageProps } from './page';
 import { pareseIntWithDefault } from '@/utils/numbers';
-import { getUsers } from '../actions';
-import { DataTable } from './data-table';
+import { getUsers } from './actions';
 import { columns } from './columns';
+import { DataTable } from '@/components/shared/DataTable';
 
 export default async function Table({ searchParams }: PageProps) {
   const page = pareseIntWithDefault(searchParams.page, 1)!;
@@ -20,6 +20,7 @@ export default async function Table({ searchParams }: PageProps) {
   return (
     <div className='px-2'>
       <DataTable
+        pathName='/users'
         columns={columns}
         data={data.users}
         count={data.count}

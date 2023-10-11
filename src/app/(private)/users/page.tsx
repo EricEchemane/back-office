@@ -1,7 +1,8 @@
-import SearchComponent from './SearchComponent';
 import { Suspense } from 'react';
-import Table from './_table';
-import { Skeleton } from '@/components/ui/skeleton';
+import TableLoading from '@/components/shared/TableLoading';
+import SearchComponent from '@/components/shared/TableSearch';
+import UserTable from './table';
+import { userSearchConfig } from './config';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,26 +16,14 @@ export interface PageProps {
   };
 }
 
-function Loading() {
-  return (
-    <div className='px-2 py-3 space-y-4'>
-      <Skeleton className='h-[2.5rem] w-full' />
-      <Skeleton className='h-[2.5rem] w-full' />
-      <Skeleton className='h-[2.5rem] w-full' />
-      <Skeleton className='h-[2.5rem] w-full' />
-      <Skeleton className='h-[2.5rem] w-full' />
-    </div>
-  );
-}
-
 export default async function UsersPage({ searchParams }: PageProps) {
-  const suspeseKey = new URLSearchParams(searchParams).toString();
+  const suspenseKey = new URLSearchParams(searchParams).toString();
 
   return (
     <div>
-      <SearchComponent />
-      <Suspense fallback={<Loading />} key={suspeseKey}>
-        <Table searchParams={searchParams} />
+      <SearchComponent pathname='/users' searchConfig={userSearchConfig} />
+      <Suspense fallback={<TableLoading />} key={suspenseKey}>
+        <UserTable searchParams={searchParams} />
       </Suspense>
     </div>
   );

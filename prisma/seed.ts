@@ -105,6 +105,17 @@ const defaultUsers = [
     username: 'Sean',
   },
 ];
+const defaultRoles = [
+  'bank officer',
+  'bank manager',
+
+  'payment officer',
+  'payment manager',
+
+  'human resource',
+
+  'customer service',
+];
 
 async function main() {
   await prisma.user.deleteMany();
@@ -135,6 +146,16 @@ async function main() {
       },
     },
   });
+
+  await Promise.all(
+    defaultRoles.map((role) =>
+      prisma.role.create({
+        data: {
+          name: role,
+        },
+      })
+    )
+  );
 
   await prisma.user.createMany({
     data: defaultUsers.map((user) => ({
