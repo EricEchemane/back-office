@@ -25,4 +25,10 @@ export const userSearchConfig: TableSearchElementsConfig = [
       { label: 'Blocked', value: 3 },
     ],
   },
+  {
+    type: 'date-range',
+    names: ['date_from', 'date_to'],
+    placeholder: 'Pick a range of date',
+    label: 'Date joined',
+  },
 ];

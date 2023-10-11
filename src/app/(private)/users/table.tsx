@@ -15,6 +15,8 @@ export default async function Table({ searchParams }: PageProps) {
     email: searchParams.email,
     username: searchParams.username,
     status: pareseIntWithDefault(searchParams.status),
+    date_from: searchParams.date_from,
+    date_to: searchParams.date_to,
   });
 
   return (
