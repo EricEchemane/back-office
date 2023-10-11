@@ -25,5 +25,12 @@ export default function useUrlSearch(pathname: string) {
     router.push(createUrl(pathname, newParams));
   };
 
-  return { handleSelectChange, registerParam, search, reset, addQuery };
+  return {
+    handleSelectChange,
+    registerParam,
+    search,
+    reset,
+    addQuery,
+    searchParams,
+  };
 }
