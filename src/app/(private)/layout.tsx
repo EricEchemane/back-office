@@ -33,7 +33,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <div className='flex'>
           <Sidebar permissions={permissions} />
-          <main className='p-3 h-screen w-full'>
+          <main className='w-full ml-[200px] p-3'>
             <Topbar session={session} />
             {children}
           </main>

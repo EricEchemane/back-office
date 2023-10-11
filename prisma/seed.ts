@@ -19,6 +19,91 @@ const defaultUsers = [
     password: 'password',
     username: 'Myra',
   },
+  {
+    email: 'ka@riujdeg.ve',
+    password: 'password',
+    username: 'Barry',
+  },
+  {
+    email: 'ripge@cosu.nf',
+    password: 'password',
+    username: 'Rosa',
+  },
+  {
+    email: 'sih@golcil.mx',
+    password: 'password',
+    username: 'Jayden',
+  },
+  {
+    email: 'suunvo@ajci.gq',
+    password: 'password',
+    username: 'Dora',
+  },
+  {
+    email: 'lozugonub@ujrevjup.in',
+    password: 'password',
+    username: 'Louisa',
+  },
+  {
+    email: 'cifjap@alu.edu',
+    password: 'password',
+    username: 'Isabelle',
+  },
+  {
+    email: 'cir@surda.vg',
+    password: 'password',
+    username: 'Aiden',
+  },
+  {
+    email: 'folah@licsib.gg',
+    password: 'password',
+    username: 'Evan',
+  },
+  {
+    email: 'op@cuhuzaba.ph',
+    password: 'password',
+    username: 'Martha',
+  },
+  {
+    email: 'taozdup@jalra.eg',
+    password: 'password',
+    username: 'Ellen',
+  },
+  {
+    email: 'loezric@pif.af',
+    password: 'password',
+    username: 'Melvin',
+  },
+  {
+    email: 'seopa@dekwicjub.zw',
+    password: 'password',
+    username: 'Kyle',
+  },
+  {
+    email: 'wa@lespajes.im',
+    password: 'password',
+    username: 'Frank',
+  },
+  {
+    email: 'ugeoceh@zeli.ee',
+    password: 'password',
+    username: 'Craig',
+  },
+  {
+    email: 'pevbobsut@sac.tk',
+    password: 'password',
+    username: 'bob',
+  },
+  {
+    email: 'bazac@ucatva.cn',
+    password: 'password',
+    username: 'Louise',
+  },
+  {
+    email: 'zutopoh@lusjos.ky',
+    password: 'password',
+    username: 'Sean',
+  },
 ];
 
 async function main() {

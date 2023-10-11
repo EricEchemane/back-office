@@ -35,7 +35,7 @@ export default function SearchComponent() {
     <form
       onSubmit={search}
       onReset={reset}
-      className='p-2 flex gap-6 items-end'
+      className='p-2 flex gap-4 items-end'
     >
       <Input
         name='username'
