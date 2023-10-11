@@ -30,24 +30,21 @@ export default function BreadCrumb() {
   return (
     <div className='mb-4'>
       {paths.map(({ fullPath, displayPath, isLast }) => {
-        let DisplayPath = (
+        const segmentHasNoPage = segmentsWithNoPage.includes(fullPath);
+
+        const withoutPath = <span className='py-1 px-2'>{displayPath}</span>;
+        const withPath = (
           <Link
-            className='hover:bg-neutral-100 py-1 px-2 rounded capitalize'
+            className='hover:bg-neutral-100 py-1 px-2 rounded'
             href={fullPath}
           >
             {displayPath}
           </Link>
         );
 
-        if (segmentsWithNoPage.includes(fullPath)) {
-          DisplayPath = (
-            <span className='py-1 px-2 capitalize'>{displayPath}</span>
-          );
-        }
-
         return (
-          <span key={fullPath} className='text-xs'>
-            {DisplayPath}
+          <span key={fullPath} className='text-xs capitalize inline-block'>
+            {segmentHasNoPage ? withoutPath : withPath}
             {!isLast && <span className='p-1'>/</span>}
           </span>
         );

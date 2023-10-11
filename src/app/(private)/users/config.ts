@@ -19,10 +19,10 @@ export const userSearchConfig: TableSearchElementsConfig = [
     label: 'Status',
     placeholder: 'Select status',
     options: [
-      { label: 'Pending', value: 1 },
-      { label: 'Active', value: 2 },
-      { label: 'InActive', value: 3 },
-      { label: 'Blocked', value: 4 },
+      { label: 'Pending', value: 0 },
+      { label: 'Active', value: 1 },
+      { label: 'In-active', value: 2 },
+      { label: 'Blocked', value: 3 },
     ],
   },
 ];

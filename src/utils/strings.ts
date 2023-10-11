@@ -1,11 +1,6 @@
-import { ReadonlyURLSearchParams } from 'next/navigation';
-
-export function createUrl(
-  pathname: string,
-  params: URLSearchParams | ReadonlyURLSearchParams
-) {
-  const paramsString = params.toString();
-  const queryString = `${paramsString.length ? '?' : ''}${paramsString}`;
-
-  return `${pathname}${queryString}`;
+export function pareseIntWithDefault(str?: string, defaultV?: number) {
+  if (!str) return defaultV;
+  const parsed = parseInt(str);
+  if (isNaN(parsed)) return defaultV;
+  return parsed;
 }

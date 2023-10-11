@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageProps } from './page';
-import { pareseIntWithDefault } from '@/utils/numbers';
+import { pareseIntWithDefault } from '@/utils/strings';
 import { getUsers } from './actions';
 import { columns } from './columns';
 import { DataTable } from '@/components/shared/DataTable';
