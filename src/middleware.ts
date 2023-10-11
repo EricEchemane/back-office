@@ -25,7 +25,18 @@ export async function middleware(request: NextRequest) {
   }
 
   // when user is logged in, restrict access to login and signup pages
-  if (accessibleToPublic.includes(currentPath)) return indexRedirect(request);
+  if (accessibleToPublic.includes(currentPath)) {
+    const prevLocation = `${currentPath}?${searchParams.toString()}`;
+    const decodedUri = decodeURIComponent(prevLocation);
+    const redirectPathPrefix = '/login?redirect-to=';
+    if (decodedUri.startsWith(redirectPathPrefix)) {
+      return NextResponse.redirect(
+        new URL(decodedUri.replace(redirectPathPrefix, ''), request.url)
+      );
+    }
+
+    return indexRedirect(request);
+  }
 
   const routes = Routes.flat(1);
   const restrictedRoute = routes.find(

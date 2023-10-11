@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
-import TableLoading from '@/components/shared/TableLoading';
-import SearchComponent from '@/components/shared/TableSearch';
+import TableLoading from '@/components/table/TableLoading';
+import SearchComponent from '@/components/table/TableSearch';
 import UserTable from './table';
 import { userSearchConfig } from './config';
 

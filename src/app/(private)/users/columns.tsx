@@ -2,6 +2,7 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import { getUsers } from './actions';
+import { formatDate } from '@/utils/dates';
 
 type User = Awaited<ReturnType<typeof getUsers>>['users'][number];
 
@@ -40,13 +41,7 @@ export const columns: ColumnDef<User>[] = [
     header: 'Created at',
     cell: ({ row }) => {
       const date = row.original.createdAt as unknown as string;
-      return new Date(date).toLocaleDateString('en-ph', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-      });
+      return formatDate(date);
     },
   },
   {
@@ -54,13 +49,7 @@ export const columns: ColumnDef<User>[] = [
     header: 'Modified at',
     cell: ({ row }) => {
       const date = row.original.updatedAt as unknown as string;
-      return new Date(date).toLocaleDateString('en-ph', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-      });
+      return formatDate(date);
     },
   },
 ];
