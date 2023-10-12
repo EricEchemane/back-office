@@ -17,24 +17,27 @@ export async function middleware(request: NextRequest) {
 
   if (!token) {
     if (accessibleToPublic.includes(currentPath)) {
+      // let the user come in to gain token
       return NextResponse.next();
     }
 
+    // if no token and wants to access restricted page, redirect to login
     const prevLocation = `${currentPath}?${searchParams.toString()}`;
     return loginRedirect(prevLocation, request);
   }
 
-  // when user is logged in, restrict access to login and signup pages
+  // here user is logged in, restrict access to login and signup pages
   if (accessibleToPublic.includes(currentPath)) {
     const prevLocation = `${currentPath}?${searchParams.toString()}`;
-    const decodedUri = decodeURIComponent(prevLocation);
+    const decodedPrevUri = decodeURIComponent(prevLocation);
     const redirectPathPrefix = '/login?redirect-to=';
-    if (decodedUri.startsWith(redirectPathPrefix)) {
+    // redirect if the prev location contains redirect-to query param
+    if (decodedPrevUri.startsWith(redirectPathPrefix)) {
       return NextResponse.redirect(
-        new URL(decodedUri.replace(redirectPathPrefix, ''), request.url)
+        new URL(decodedPrevUri.replace(redirectPathPrefix, ''), request.url)
       );
     }
-
+    // else redirect to index
     return indexRedirect(request);
   }
 
@@ -54,7 +57,8 @@ export async function middleware(request: NextRequest) {
   } else if (typeof restrictedRoute.permission === 'string') {
     isPermitted = userPermissions.has(restrictedRoute.permission);
   }
-  // const isPermitted = userPermissions.has(restrictedRoute.permission);
+
+  // insufficient permission, redirect to index
   if (!isPermitted) {
     Logger.warn(request, ELogMessage.UserTryAccessWithoutPermission);
     return indexRedirect(request);

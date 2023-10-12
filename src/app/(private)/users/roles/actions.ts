@@ -8,9 +8,11 @@ export async function getRoles(args: {
   name?: string;
 }) {
   const { page, per_page, name } = args;
+  const table = prisma.role;
 
+  const getCount = () => table.count();
   const getRolesData = async () => {
-    return await prisma.role.findMany({
+    return await table.findMany({
       skip: page * per_page - per_page,
       take: per_page,
       where: {
@@ -22,10 +24,7 @@ export async function getRoles(args: {
     });
   };
 
-  const [roles, count] = await Promise.all([
-    getRolesData(),
-    await prisma.role.count(),
-  ]);
+  const [roles, count] = await Promise.all([getRolesData(), getCount()]);
 
   return { roles, count };
 }

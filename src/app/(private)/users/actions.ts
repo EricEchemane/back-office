@@ -12,9 +12,11 @@ export async function getUsers(args: {
   date_to?: string;
 }) {
   const { page, per_page, username, email, status } = args;
+  const table = prisma.user;
 
-  const getUsersData = async () => {
-    return await prisma.user.findMany({
+  const getCount = () => table.count();
+  const getData = async () => {
+    return await table.findMany({
       skip: page * per_page - per_page,
       take: per_page,
       select: {
@@ -41,10 +43,7 @@ export async function getUsers(args: {
     });
   };
 
-  const [users, count] = await Promise.all([
-    getUsersData(),
-    await prisma.user.count(),
-  ]);
+  const [users, count] = await Promise.all([getData(), getCount()]);
 
   return { users, count };
 }
