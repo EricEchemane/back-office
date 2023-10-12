@@ -8,6 +8,8 @@ export async function getUsers(args: {
   username?: string;
   email?: string;
   status?: number;
+  date_from?: string;
+  date_to?: string;
 }) {
   const { page, per_page, username, email, status } = args;
 
@@ -30,6 +32,10 @@ export async function getUsers(args: {
         username: {
           contains: username,
           mode: 'insensitive',
+        },
+        createdAt: {
+          gte: args.date_from,
+          lte: args.date_to,
         },
       },
     });

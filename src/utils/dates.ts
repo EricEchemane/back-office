@@ -5,8 +5,8 @@ export function formatDate(
     month: 'short',
     day: 'numeric',
     year: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
+    // hour: 'numeric',
+    // minute: 'numeric',
   }
 ) {
   return new Date(date).toLocaleDateString(locale, options);

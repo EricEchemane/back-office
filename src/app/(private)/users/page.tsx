@@ -13,6 +13,8 @@ export interface PageProps {
     username?: string;
     email?: string;
     status?: string;
+    date_from?: string;
+    date_to?: string;
   };
 }
 

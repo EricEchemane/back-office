@@ -4,16 +4,6 @@ import {
   useSearchParams,
 } from 'next/navigation';
 
-export function createUrl(
-  pathname: string,
-  params: URLSearchParams | ReadonlyURLSearchParams
-) {
-  const paramsString = params.toString();
-  const queryString = `${paramsString.length ? '?' : ''}${paramsString}`;
-
-  return `${pathname}${queryString}`;
-}
-
 export default function useUrlSearch(pathname: string) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -25,10 +15,7 @@ export default function useUrlSearch(pathname: string) {
       : newParams.delete(input.name);
   };
 
-  const addQuery = (name: string, value: string) => {
-    newParams.set(name, value);
-  };
-
+  const addQuery = (name: string, value: string) => newParams.set(name, value);
   const search = () => router.push(createUrl(pathname, newParams));
   const reset = () => router.push(pathname);
 
@@ -39,11 +26,21 @@ export default function useUrlSearch(pathname: string) {
   };
 
   return {
+    searchParams,
     handleSelectChange,
     registerParam,
+    addQuery,
     search,
     reset,
-    addQuery,
-    searchParams,
   };
+}
+
+export function createUrl(
+  pathname: string,
+  params: URLSearchParams | ReadonlyURLSearchParams
+) {
+  const paramsString = params.toString();
+  const queryString = `${paramsString.length ? '?' : ''}${paramsString}`;
+
+  return `${pathname}${queryString}`;
 }
