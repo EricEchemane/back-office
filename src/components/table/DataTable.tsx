@@ -1,10 +1,19 @@
 'use client';
 
+import React, { useEffect } from 'react';
+import { Table2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+
+import useUrlSearch from '@/hooks/useUrlSearch';
+
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
+  SortingState,
+  getSortedRowModel,
+  VisibilityState,
 } from '@tanstack/react-table';
 
 import {
@@ -16,9 +25,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-import { Button } from '@/components/ui/button';
-import useUrlSearch from '@/hooks/useUrlSearch';
-
 import {
   Select,
   SelectContent,
@@ -27,6 +33,13 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -34,6 +47,10 @@ interface DataTableProps<TData, TValue> {
   perPage: number;
   currentPage: number;
   pathName: string;
+  visibilitySettings?: boolean;
+  extraRightTools?: React.ReactNode;
+  extraLeftTools?: React.ReactNode;
+  onSelectRows?: (selectedIndeces: Record<number, boolean>) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -43,15 +60,37 @@ export function DataTable<TData, TValue>({
   perPage,
   currentPage,
   pathName,
+  visibilitySettings = true,
+  extraLeftTools,
+  extraRightTools,
+  onSelectRows,
 }: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      columnVisibility,
+      rowSelection,
+    },
   });
 
   const { search, addQuery, searchParams, handleSelectChange } =
     useUrlSearch(pathName);
+
+  useEffect(() => {
+    onSelectRows?.(rowSelection);
+  }, [onSelectRows, rowSelection]);
 
   function changePage(page: number) {
     addQuery('page', page.toString());
@@ -59,10 +98,64 @@ export function DataTable<TData, TValue>({
   }
 
   const pagesCount = Math.ceil(count / perPage);
+  const selectedRows = table.getFilteredSelectedRowModel().rows;
+  const currentPageRows = table.getFilteredRowModel().rows;
+
+  const noSelectedRows = selectedRows.length <= 0;
+  const rowSelectionDisplayText = noSelectedRows
+    ? null
+    : `${selectedRows.length} of ${currentPageRows.length} ${
+        currentPageRows.length > 1 ? 'rows' : 'row'
+      } selected`;
 
   return (
     <div>
-      <div className='rounded-md border'>
+      <div className='flex items-center py-2 justify-between'>
+        <div aria-label='table left tools' className='flex items-center gap-2'>
+          {extraLeftTools}
+
+          {rowSelectionDisplayText && (
+            <div className='text-sm text-muted-foreground mx-2'>
+              {rowSelectionDisplayText}
+            </div>
+          )}
+        </div>
+
+        <div aria-label='table right tools' className='flex items-center gap-2'>
+          {extraRightTools}
+
+          {visibilitySettings && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant='secondary' size={'icon'} className='ml-auto'>
+                  <Table2 />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align='end'>
+                {table
+                  .getAllColumns()
+                  .filter((column) => column.getCanHide())
+                  .map((column) => {
+                    return (
+                      <DropdownMenuCheckboxItem
+                        key={column.id}
+                        className='capitalize'
+                        checked={column.getIsVisible()}
+                        onCheckedChange={(value) =>
+                          column.toggleVisibility(!!value)
+                        }
+                      >
+                        {column.id}
+                      </DropdownMenuCheckboxItem>
+                    );
+                  })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </div>
+      </div>
+
+      <div aria-label='data table' className='rounded-md border'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

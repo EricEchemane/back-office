@@ -1,6 +1,6 @@
-export default function Spinner() {
+export default function Spinner({ small }: { small?: boolean }) {
   return (
-    <div className={`spinner`}>
+    <div className={`spinner ${small ? 'scale-75' : ''}`}>
       <div className='bar1'></div>
       <div className='bar2'></div>
       <div className='bar3'></div>

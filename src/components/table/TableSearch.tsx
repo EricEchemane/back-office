@@ -69,7 +69,7 @@ export default function SearchComponent(props: Props) {
     <form
       onSubmit={search}
       onReset={reset}
-      className='p-2 flex gap-4 items-end flex-wrap'
+      className='m-2 flex gap-4 items-end flex-wrap border-b pb-4'
     >
       {props.searchConfig.map((element) => {
         // ====================================================== Date Range
