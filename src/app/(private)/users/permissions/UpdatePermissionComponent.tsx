@@ -52,9 +52,9 @@ export default function UpdatePermissionComponent({
       return;
     }
 
-    reset();
-    onSuccess();
     router.refresh();
+    onSuccess();
+    reset();
   };
 
   return (

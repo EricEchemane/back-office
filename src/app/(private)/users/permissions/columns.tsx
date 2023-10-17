@@ -1,12 +1,14 @@
 'use client';
 
+import { useState } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 import { getPermissions } from './actions';
 import { formatDate } from '@/utils/dates';
 
 import { ArrowUpDown, MoreHorizontal, Pencil } from 'lucide-react';
-
+import UpdatePermissionComponent from './UpdatePermissionComponent';
 import { Button } from '@/components/ui/button';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,8 +16,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useState } from 'react';
-import UpdatePermissionComponent from './UpdatePermissionComponent';
 
 type Permission = Awaited<
   ReturnType<typeof getPermissions>

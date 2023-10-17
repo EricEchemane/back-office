@@ -25,7 +25,7 @@ function constructSegments(pathName: string) {
 
 export default function BreadCrumb() {
   const pathName = usePathname();
-  const paths = constructSegments(pathName);
+  const paths = constructSegments(decodeURIComponent(pathName));
 
   return (
     <div className='mb-4'>

@@ -14,6 +14,7 @@ export default function LoginPage() {
   const { toast } = useToast();
 
   const [loading, setIsLoading] = useState(false);
+  const [loadingGoogleSignin, setLoadingGoogleSignin] = useState(false);
   const username = useRef<ElementRef<'input'>>(null);
   const password = useRef<ElementRef<'input'>>(null);
 
@@ -51,6 +52,11 @@ export default function LoginPage() {
     });
   }
 
+  function signGoogle() {
+    setLoadingGoogleSignin(true);
+    signIn('google');
+  }
+
   return (
     <div className='min-h-screen grid place-items-center'>
       <form onSubmit={login} className='m-auto p-7 grid gap-8 w-[400px] border'>
@@ -81,7 +87,8 @@ export default function LoginPage() {
           <Button
             type='button'
             variant={'outline'}
-            onClick={() => signIn('google')}
+            onClick={signGoogle}
+            loading={loadingGoogleSignin}
           >
             Continue with Google
           </Button>
