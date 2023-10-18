@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { ColumnDef } from "@tanstack/react-table";
-import { getUsers } from "./actions";
-import { formatDate } from "@/utils/dates";
-import { ArrowRight, ArrowUpDown } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useRouter } from "next/navigation";
-import TableActions from "@/components/table/TableActions";
+import { ColumnDef } from '@tanstack/react-table';
+import { getUsers } from './actions';
+import { formatDate } from '@/utils/dates';
+import { ArrowRight, ArrowUpDown } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { useRouter } from 'next/navigation';
+import TableActions from '@/components/table/TableActions';
 
-type User = Awaited<ReturnType<typeof getUsers>>["users"][number];
+type User = Awaited<ReturnType<typeof getUsers>>['users'][number];
 
 export function useUsersTableColumns() {
   const router = useRouter();
 
   const columns: ColumnDef<User>[] = [
     {
-      id: "select",
+      id: 'select',
       header: ({ table }) => (
         <Checkbox
           checked={table.getIsAllPageRowsSelected()}
@@ -34,12 +34,12 @@ export function useUsersTableColumns() {
       enableHiding: false,
     },
     {
-      accessorKey: "username",
+      accessorKey: 'username',
       header: ({ column }) => {
         return (
           <button
             className="flex items-center"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             Username
             <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -48,48 +48,48 @@ export function useUsersTableColumns() {
       },
     },
     {
-      accessorKey: "email",
-      header: "Email",
+      accessorKey: 'email',
+      header: 'Email',
     },
     {
-      accessorKey: "status",
-      header: "Status",
+      accessorKey: 'status',
+      header: 'Status',
       cell: ({ row }) => {
-        const role: number = row.getValue("status");
+        const role: number = row.getValue('status');
         switch (role) {
           case 1:
-            return "Active";
+            return 'Active';
           default:
-            return "Pending";
+            return 'Pending';
         }
       },
     },
     {
-      accessorKey: "role",
-      header: "Role",
+      accessorKey: 'role',
+      header: 'Role',
       cell: ({ row }) => {
         const role = row.original.role;
-        return role?.name ?? "-";
+        return role?.name ?? '-';
       },
     },
     {
-      accessorKey: "createdAt",
-      header: "Created at",
+      accessorKey: 'createdAt',
+      header: 'Created at',
       cell: ({ row }) => {
         const date = row.original.createdAt as unknown as string;
         return formatDate(date);
       },
     },
     {
-      accessorKey: "updatedAt",
-      header: "Modified at",
+      accessorKey: 'updatedAt',
+      header: 'Modified at',
       cell: ({ row }) => {
         const date = row.original.updatedAt as unknown as string;
         return formatDate(date);
       },
     },
     {
-      id: "actions",
+      id: 'actions',
       cell: ({ row }) => {
         return (
           <TableActions
@@ -97,7 +97,7 @@ export function useUsersTableColumns() {
             items={[
               {
                 key: 1,
-                label: "Set Roles",
+                label: 'Set Role',
                 onClick() {
                   router.push(`/users/${row.original.username}`);
                 },

@@ -1,16 +1,16 @@
-import { MoreHorizontal } from "lucide-react";
-import { Button } from "../ui/button";
+import { MoreHorizontal } from 'lucide-react';
+import { Button } from '../ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+} from '../ui/dropdown-menu';
 
 export interface TableActionsProps {
   title?: string;
-  items?: {
+  items: {
     key: number;
     label: string;
     onClick: () => void;
