@@ -1,5 +1,5 @@
 import { Permission } from '@prisma/client';
-import { useEffect, useSyncExternalStore } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 
 let state: {
   availablePermissions: Map<number, Permission>;
@@ -71,6 +71,26 @@ export function usePermissionAssignment(initialState: {
     () => state
   );
 
+  const [selectedPermissions, setSelectedPermissions] = useState<Set<number>>(
+    new Set()
+  );
+
+  function setSelectedPermission(id: number, selected: boolean) {
+    const clone = new Set(selectedPermissions);
+    if (selected) clone.add(id);
+    else clone.delete(id);
+    setSelectedPermissions(clone);
+  }
+
+  function transferToAssignedPermissions() {
+    assignPermissions(Array.from(selectedPermissions));
+    clearSelection();
+  }
+
+  function clearSelection() {
+    setSelectedPermissions(new Set());
+  }
+
   useEffect(() => {
     setAvailablePermissions(initialState.availablePermissions);
     setAssignedPermissions(initialState.assignedPermissions);
@@ -85,8 +105,12 @@ export function usePermissionAssignment(initialState: {
 
   return {
     assignedPermissions,
+    selectedPermissions,
     availablePermissions,
+    clearSelection,
     assignPermissions,
+    setSelectedPermission,
     removeFromAssignedPermissions,
+    transferToAssignedPermissions,
   };
 }

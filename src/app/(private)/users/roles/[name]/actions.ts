@@ -32,19 +32,19 @@ export async function getPermissionsNotInRole(roleName: string) {
   });
 }
 
-export async function assignPermissionToRole(
+export async function assignPermissionsToRole(
   roleName: string,
-  permissionName: string
+  permissionIds: number[]
 ) {
+  const ids = permissionIds.map((id) => ({ id }));
+
   return await prisma.role.update({
     where: {
       name: roleName,
     },
     data: {
       permissions: {
-        connect: {
-          name: permissionName,
-        },
+        set: ids,
       },
     },
   });

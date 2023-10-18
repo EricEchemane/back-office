@@ -14,13 +14,14 @@ export default async function RoleDetailPage({
   ]);
 
   if (!role) {
-    return <div className='p-2 text-red-600 font-bold'>Role not found</div>;
+    return <div className="p-2 text-red-600 font-bold">Role not found</div>;
   }
 
   return (
-    <div className='py-4 m-auto w-[750px]'>
-      <h1 className='text-lg font-bold capitalize'> {role.name} Role </h1>
+    <div className="py-4 m-auto w-[750px]">
+      <h1 className="text-lg font-bold capitalize"> {role.name} Role </h1>
       <PermissionAssignment
+        roleName={role.name}
         assignedPermissions={role.permissions}
         availablePermissions={permissionsInitialOptions}
       />
