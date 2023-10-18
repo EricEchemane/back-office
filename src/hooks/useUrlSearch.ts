@@ -15,9 +15,12 @@ export default function useUrlSearch(pathname: string) {
       : newParams.delete(input.name);
   };
 
-  const addQuery = (name: string, value: string) => newParams.set(name, value);
-  const search = () => router.push(createUrl(pathname, newParams));
   const reset = () => router.push(pathname);
+  const search = () => router.push(createUrl(pathname, newParams));
+  const addQuery = (name: string, value: string) => {
+    if (value && value != '') newParams.set(name, value);
+    else newParams.delete(name);
+  };
 
   const handleSelectChange = (value: string, name: string) => {
     if (value != '') newParams.set(name, value);
