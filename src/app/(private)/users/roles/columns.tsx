@@ -1,50 +1,63 @@
-'use client';
+"use client";
 
-import { ColumnDef } from '@tanstack/react-table';
-import { getRoles } from './actions';
-import { formatDate } from '@/utils/dates';
-import { Checkbox } from '@/components/ui/checkbox';
+import { ColumnDef } from "@tanstack/react-table";
+import { getRoles } from "./actions";
+import { formatDate } from "@/utils/dates";
+import { ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-type Roles = Awaited<ReturnType<typeof getRoles>>['roles'][number];
+import TableActions from "@/components/table/TableActions";
 
-export const columns: ColumnDef<Roles>[] = [
-  {
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label='Select all'
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label='Select row'
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: 'name',
-    header: 'Name',
-  },
-  {
-    accessorKey: 'createdAt',
-    header: 'Created at',
-    cell: ({ row }) => {
-      const date = row.original.createdAt as unknown as string;
-      return formatDate(date);
+export type Role = Awaited<ReturnType<typeof getRoles>>["roles"][number];
+
+export function useRolesTableColumns() {
+  const router = useRouter();
+
+  const columns: ColumnDef<Role>[] = [
+    {
+      accessorKey: "name",
+      header: "Name",
+      cell: ({ row }) => (
+        <span className="capitalize">{row.original.name}</span>
+      ),
     },
-  },
-  {
-    accessorKey: 'updatedAt',
-    header: 'Modified at',
-    cell: ({ row }) => {
-      const date = row.original.updatedAt as unknown as string;
-      return formatDate(date);
+    {
+      accessorKey: "createdAt",
+      header: "Created at",
+      cell: ({ row }) => {
+        const date = row.original.createdAt as unknown as string;
+        return formatDate(date);
+      },
     },
-  },
-];
+    {
+      accessorKey: "updatedAt",
+      header: "Modified at",
+      cell: ({ row }) => {
+        const date = row.original.updatedAt as unknown as string;
+        return formatDate(date);
+      },
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        return (
+          <TableActions
+            title="Actions"
+            items={[
+              {
+                key: 1,
+                label: "View Permissions",
+                onClick() {
+                  router.push(`/users/roles/${row.original.name}`);
+                },
+                icon: <ArrowRight size={16} />,
+              },
+            ]}
+          />
+        );
+      },
+    },
+  ];
+
+  return { columns };
+}

@@ -1,9 +1,7 @@
-import React from 'react';
 import { PageProps } from './page';
 import { pareseIntWithDefault } from '@/utils/strings';
 import { getRoles } from './actions';
-import { columns } from './columns';
-import { DataTable } from '@/components/table/DataTable';
+import TableWrapper from './TableWrapper';
 
 export async function RolesTable({ searchParams }: PageProps) {
   const page = pareseIntWithDefault(searchParams.page, 1)!;
@@ -15,16 +13,5 @@ export async function RolesTable({ searchParams }: PageProps) {
     name: searchParams.name,
   });
 
-  return (
-    <div className='px-2'>
-      <DataTable
-        pathName='/users/roles'
-        columns={columns}
-        data={data.roles}
-        count={data.count}
-        perPage={per_page}
-        currentPage={page}
-      />
-    </div>
-  );
+  return <TableWrapper data={data} perPage={per_page} currentPage={page} />;
 }

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { getUsers } from './actions';
-import { columns } from './columns';
-import { DataTable } from '@/components/table/DataTable';
+import { getUsers } from "./actions";
+import { useUsersTableColumns } from "./columns";
+import { DataTable } from "@/components/table/DataTable";
 
 interface Props {
   data: Awaited<ReturnType<typeof getUsers>>;
@@ -11,6 +11,8 @@ interface Props {
 }
 
 export default function Wrapper({ data, currentPage, perPage }: Props) {
+  const { columns } = useUsersTableColumns();
+  
   function handleSelectRows(selectedIndeces: Record<number, boolean>) {
     Object.keys(selectedIndeces).forEach((index) => {
       const user = data.users[Number(index)];
@@ -19,10 +21,10 @@ export default function Wrapper({ data, currentPage, perPage }: Props) {
   }
 
   return (
-    <div className='px-2'>
+    <div className="px-2">
       <DataTable
         onSelectRows={handleSelectRows}
-        pathName='/users'
+        pathName="/users"
         columns={columns}
         data={data.users}
         count={data.count}
