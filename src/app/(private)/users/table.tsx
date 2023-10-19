@@ -15,6 +15,7 @@ export default async function Table({ searchParams }: PageProps) {
     status: pareseIntWithDefault(searchParams.status),
     date_from: searchParams.date_from,
     date_to: searchParams.date_to,
+    role: searchParams.role,
   });
 
   return <TableWrapper data={data} perPage={per_page} currentPage={page} />;

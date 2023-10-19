@@ -10,8 +10,9 @@ export async function getUsers(args: {
   status?: number;
   date_from?: string;
   date_to?: string;
+  role?: string;
 }) {
-  const { page, per_page, username, email, status } = args;
+  const { page, per_page, username, email, status, role } = args;
   const table = prisma.user;
 
   const getCount = () => table.count();
@@ -35,6 +36,14 @@ export async function getUsers(args: {
           contains: username,
           mode: 'insensitive',
         },
+        role: !role
+          ? undefined
+          : {
+              name: {
+                contains: role,
+                mode: 'insensitive',
+              },
+            },
         createdAt: {
           gte: args.date_from,
           lte: args.date_to,

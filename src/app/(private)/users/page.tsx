@@ -15,6 +15,7 @@ export interface PageProps {
     status?: string;
     date_from?: string;
     date_to?: string;
+    role?: string;
   };
 }
 
@@ -23,7 +24,7 @@ export default async function UsersPage({ searchParams }: PageProps) {
 
   return (
     <div>
-      <SearchComponent pathname='/users' searchConfig={userSearchConfig} />
+      <SearchComponent pathname="/users" searchConfig={userSearchConfig} />
       <Suspense fallback={<TableLoading />} key={suspenseKey}>
         <UserTable searchParams={searchParams} />
       </Suspense>

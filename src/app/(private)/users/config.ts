@@ -9,6 +9,12 @@ export const userSearchConfig: TableSearchElementsConfig = [
   },
   {
     type: 'text',
+    name: 'role',
+    label: 'Role',
+    placeholder: 'Search by role name',
+  },
+  {
+    type: 'text',
     name: 'email',
     placeholder: 'Search by email',
     label: 'Email',
