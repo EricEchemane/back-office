@@ -7,12 +7,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
+import React from 'react';
 
 export interface TableActionsProps {
   title?: string;
   items: {
     key: number;
-    label: string;
+    label: React.ReactNode;
     onClick: () => void;
     icon?: React.ReactNode;
   }[];
@@ -31,11 +32,11 @@ export default function TableActions({ title, items }: TableActionsProps) {
         {items?.map((item) => (
           <DropdownMenuItem
             key={item.key}
-            className="flex items-center gap-1"
+            className="flex items-center gap-2"
             onClick={() => item.onClick()}
           >
-            {item.label}
             {item.icon}
+            {item.label}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

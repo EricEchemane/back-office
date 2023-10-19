@@ -11,18 +11,21 @@ type Props = {
 };
 
 export default function TableWrapper({ currentPage, data, perPage }: Props) {
-  const { columns } = useRolesTableColumns();
+  const { columns, PermissionAssignmentComp } = useRolesTableColumns(
+    data.permissions
+  );
 
   return (
-    <div className='px-2'>
+    <div className="px-2">
       <DataTable
-        pathName='/users/roles'
         columns={columns}
         data={data.roles}
-        count={data.count}
         perPage={perPage}
+        count={data.count}
+        pathName="/users/roles"
         currentPage={currentPage}
       />
+      {PermissionAssignmentComp}
     </div>
   );
 }

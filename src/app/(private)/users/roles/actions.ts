@@ -11,6 +11,7 @@ export async function getRoles(args: {
   const table = prisma.role;
 
   const getCount = () => table.count();
+  const getAllPermissions = () => prisma.permission.findMany();
   const getRolesData = async () => {
     return await table.findMany({
       skip: page * per_page - per_page,
@@ -21,10 +22,39 @@ export async function getRoles(args: {
           mode: 'insensitive',
         },
       },
+      include: {
+        permissions: true,
+      },
     });
   };
 
-  const [roles, count] = await Promise.all([getRolesData(), getCount()]);
+  const [roles, count, permissions] = await Promise.all([
+    getRolesData(),
+    getCount(),
+    getAllPermissions(),
+  ]);
 
-  return { roles, count };
+  return { roles, count, permissions };
+}
+
+export async function assignPermissionsToRole(
+  roleName: string,
+  permissionIds: number[]
+) {
+  try {
+    const ids = permissionIds.map((id) => ({ id }));
+
+    await prisma.role.update({
+      where: {
+        name: roleName,
+      },
+      data: {
+        permissions: {
+          set: ids,
+        },
+      },
+    });
+  } catch (error) {
+    return { error: 'Something went wrong' };
+  }
 }

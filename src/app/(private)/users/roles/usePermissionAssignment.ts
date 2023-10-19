@@ -1,5 +1,5 @@
 import { Permission } from '@prisma/client';
-import { useEffect, useState, useSyncExternalStore } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 
 let state: {
   availablePermissions: Map<number, Permission>;
@@ -61,10 +61,7 @@ function removeFromAssignedPermissions(id: number) {
 
 // =================== Hooks ===========================
 
-export function usePermissionAssignment(initialState: {
-  availablePermissions: Permission[];
-  assignedPermissions: Permission[];
-}) {
+export function usePermissionAssignment() {
   const reactiveState = useSyncExternalStore(
     subscribe,
     () => state,
@@ -91,11 +88,6 @@ export function usePermissionAssignment(initialState: {
     setSelectedPermissions(new Set());
   }
 
-  useEffect(() => {
-    setAvailablePermissions(initialState.availablePermissions);
-    setAssignedPermissions(initialState.assignedPermissions);
-  }, [initialState.availablePermissions, initialState.assignedPermissions]);
-
   const availablePermissions = Array.from(
     reactiveState.availablePermissions.values()
   );
@@ -110,6 +102,8 @@ export function usePermissionAssignment(initialState: {
     clearSelection,
     assignPermissions,
     setSelectedPermission,
+    setAssignedPermissions,
+    setAvailablePermissions,
     removeFromAssignedPermissions,
     transferToAssignedPermissions,
   };
