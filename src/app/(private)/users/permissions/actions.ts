@@ -58,6 +58,10 @@ export async function updatePermission(id: number, name: string) {
   }
 }
 
+export async function getAllPermissions() {
+  return await prisma.permission.findMany();
+}
+
 function handleError(error: unknown) {
   if (
     error instanceof PrismaClientKnownRequestError &&
