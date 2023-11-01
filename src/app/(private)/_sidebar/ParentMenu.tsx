@@ -34,7 +34,8 @@ export default function ParentMenu(props: Props) {
     props.children?.some((child) => child.pathname === pathname);
   const [expanded, setExpanded] = useState(initiallyExpanded);
 
-  const active = pathname === props.pathname;
+  const active =
+    pathname === props.pathname || props.selected === props.displayName;
   const Chevron = expanded ? ChevronDown : ChevronRight;
 
   function handleClick() {
@@ -50,14 +51,14 @@ export default function ParentMenu(props: Props) {
     <Button
       size={'sm'}
       variant={active ? 'secondary' : 'ghost'}
-      className='justify-start gap-3 w-full'
+      className="justify-start gap-3 w-full"
       onClick={handleClick}
     >
-      <div className='w-[1rem]'>
-        <props.icon className='w-[1rem] h-[1rem]' />
+      <div className="w-[1rem]">
+        <props.icon className="w-[1rem] h-[1rem]" />
       </div>
       {props.displayName}
-      <Chevron className='w-[.9rem] h-[.9rem] ml-auto' />
+      <Chevron className="w-[.9rem] h-[.9rem] ml-auto" />
     </Button>
   );
 
@@ -70,7 +71,8 @@ export default function ParentMenu(props: Props) {
       const permitted = props.userPermissions.has(child.permission);
       if (!permitted) return null;
 
-      const active = child.pathname === pathname;
+      const active =
+        child.pathname === pathname || child.displayName === props.selected;
 
       return (
         <div key={child.displayName}>
@@ -78,10 +80,10 @@ export default function ParentMenu(props: Props) {
             <Button
               size={'sm'}
               variant={active ? 'secondary' : 'ghost'}
-              className='justify-start gap-3 w-full'
+              className="justify-start gap-3 w-full"
               onClick={() => props.setSelected(child.displayName)}
             >
-              <div className='w-[1rem]' />
+              <div className="w-[1rem]" />
               {child.displayName}
             </Button>
           </Link>
